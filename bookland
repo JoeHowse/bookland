@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 MYNAME="bookland"
 MYVERSION="1.3"
@@ -126,7 +126,7 @@ class Postscript:
         if max(cmyk)>1 or min(cmyk)<0:
             raise PostscriptError("cmyk value out of range")
 
-        bbox = map(int,self.bb)
+        bbox = list(map(int,self.bb))
         # int truncates towards zero.
         for i in range(len(bbox)):
             if bbox[i] > 0:
@@ -451,7 +451,7 @@ def doTheRightThing(s,font,price,moduleHeight,
     else:
         upc5=None
 
-    commandLine = string.join(sys.argv)
+    commandLine = " ".join(sys.argv)
     epsComment = "%% Command line: %s" % commandLine
     creator = "%s %s" % (MYNAME,MYVERSION)
     title = str(productCode)
@@ -592,9 +592,9 @@ Usage: %s [-h|--help] [-V|--version] [-f|--font=fontname] [-q]
 
     if checkonly:
         productCode = makeProductCode(s,forceISBN13=True)
-        print "%s understood as %s" % (s,productCode)
+        print("%s understood as %s" % (s,productCode))
         if productCode.type in [ "ISBN10", "ISMN" ]:
-            print "13-digit version: %s" % productCode.as13()
+            print("13-digit version: %s" % productCode.as13())
         sys.exit(0)
 
     try:
@@ -604,8 +604,8 @@ Usage: %s [-h|--help] [-V|--version] [-f|--font=fontname] [-q]
                                             padding,
                                             position
                                             )
-    except ProductCodeError,e:
-        for msg in e.msgs: print msg
+    except ProductCodeError as e:
+        for msg in e.msgs: print(msg)
         printUsage()
         sys.exit(1)
 
